@@ -22,6 +22,20 @@ class Config:
             "text_color": [255, 255, 255],  # RGB
             "accent_color": [0, 255, 204],  # RGB (点滅時の色)
             "splash_bg_color": [0, 0, 0]  # RGB
+        },
+        "server": {
+            "port": 8080,
+            "host": "0.0.0.0",  # すべてのインターフェースでリッスン
+            "enabled": True
+        },
+        "debug": {
+            "enabled": True,  # デバッグモードを有効化（デフォルトでON）
+            "show_traceback": True,  # トレースバックを表示
+            "log_to_file": False,  # ログをファイルに出力
+            "log_file": "pykara_debug.log"  # ログファイル名
+        },
+        "display": {
+            "fullscreen": False  # フルスクリーン表示（False=ウィンドウ表示）
         }
     }
     

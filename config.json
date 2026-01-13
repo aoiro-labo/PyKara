@@ -1,0 +1,47 @@
+{
+    "font": {
+        "family": "",
+        "title_size": 36,
+        "normal_size": 20,
+        "small_size": 14,
+        "title_bold": true,
+        "normal_bold": false,
+        "small_bold": false
+    },
+    "theme": {
+        "background_color": [
+            10,
+            10,
+            30
+        ],
+        "text_color": [
+            255,
+            255,
+            255
+        ],
+        "accent_color": [
+            0,
+            255,
+            204
+        ],
+        "splash_bg_color": [
+            0,
+            0,
+            0
+        ]
+    },
+    "server": {
+        "port": 8080,
+        "host": "0.0.0.0",
+        "enabled": true
+    },
+    "debug": {
+        "enabled": true,
+        "show_traceback": true,
+        "log_to_file": true,
+        "log_file": "pykara_debug.log"
+    },
+    "display": {
+        "fullscreen": false
+    }
+}
