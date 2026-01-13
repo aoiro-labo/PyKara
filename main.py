@@ -41,35 +41,29 @@ class PyKaraMain(QMainWindow):
             self.msg.setStyleSheet("color: white;")
         self.visible_state = not self.visible_state
 
-# --- 2. 起動処理関数 ---
 def start_app():
     app = QApplication(sys.argv)
 
-    # スプラッシュスクリーンの作成
-    # 画像がない場合は、QPixmapで仮の背景色を生成
     pixmap = QPixmap(QSize(600, 400))
     pixmap.fill(QColor(0, 0, 0))
     splash = QSplashScreen(pixmap)
-    
-    # 注意文言の表示
     splash.show()
+
     splash.showMessage(
-        "PyKara System Booting...\n\n【注意】大音量での歌唱は近隣の迷惑にならないようご注意ください", 
-        Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom, 
+        "PyKara System Booting...\n\n【注意】大音量での歌唱は近隣の迷惑にならないようご注意ください",
+        Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom,
         Qt.GlobalColor.white
     )
-    
-    # 起動時の「溜め」（3秒間）
-    # ※実際はここで楽曲データの読み込みなどを行う
-    app.processEvents()
-    time.sleep(3)
 
-    # メイン画面へ
-    main_win = PyKaraMain()
-    main_win.show()
-    splash.finish(main_win)
-    
+    def show_main():
+        main_win = PyKaraMain()
+        main_win.show()
+        splash.finish(main_win)
+
+    QTimer.singleShot(3000, show_main)
+
     sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     start_app()
