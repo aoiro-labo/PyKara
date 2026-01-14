@@ -1,10 +1,12 @@
 # main.py
-
 import sys
+import os
 import traceback
-from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
-from PyQt6.QtCore import Qt, QTimer, QSize
+from PyQt6.QtWidgets import QApplication, QSplashScreen, QMainWindow, QMessageBox
+from PyQt6.QtCore import Qt, QTimer, QUrl
 from PyQt6.QtGui import QPixmap, QColor, QMouseEvent
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PyQt6.QtMultimediaWidgets import QVideoWidget
 
 from ui.attract import PyKaraAttract
 from config import Config
@@ -23,148 +25,109 @@ class NonClickableSplashScreen(QSplashScreen):
         event.ignore()
 
 
-class PyKaraApp(QApplication):
-    """
-    業務用っぽい構造：
-    - ウィンドウをアプリケーションが保持
-    - GC で落ちるのを防ぐ
-    """
-    def __init__(self, argv):
-        super().__init__(argv)
-        self.attract_window = None
-        self.karaoke_window = None
-        self.splash = None
-        self.config = None
-        self.logger = None
-        self.selection_manager = None
-        self.api_server = None
-        self.theme_manager = None
-
-
 def main():
-    # =========================
-    # 設定とロガー
-    # =========================
-    try:
-        config = Config()
-    except Exception as e:
-        print(f"設定ファイル読み込み失敗: {e}")
-        traceback.print_exc()
-        input("Enterキーで終了...")
-        sys.exit(1)
+    global app
+    config = Config()
+    logger = DebugLogger(config)
+    logger.info("PyKaraを起動しています...")
 
-    app = PyKaraApp(sys.argv)
-    app.config = config
-    app.logger = DebugLogger(config)
-    app.logger.info("PyKaraを起動しています...")
+    app = QApplication(sys.argv)
 
-    try:
-        # フォント設定
-        FontSet.set_config(config)
-        app.logger.debug("FontSetを設定しました")
-        
-        # テーマ管理
-        app.theme_manager = ThemeManager(config)
-        app.logger.debug("ThemeManager初期化完了")
+    width, height = 1920, 1080  # デフォルト16:9
+    main_window = QMainWindow()
+    main_window.setWindowTitle("PyKara - 16:9 Fixed Window")
+    main_window.setFixedSize(width, height)
+    main_window.show()
 
-        # 選曲管理
-        app.selection_manager = SelectionManager()
-        app.logger.debug("SelectionManager初期化完了")
+    selection_manager = SelectionManager()
 
-        # APIサーバー
-        if config.get("server.enabled", True):
-            try:
-                app.api_server = APIServer(app.selection_manager, config)
-                app.api_server.start()
-                app.logger.info(f"APIサーバー起動: {app.api_server.get_url()}")
-            except Exception as e:
-                app.logger.error(f"サーバー起動エラー: {e}", exc_info=sys.exc_info())
-                print(f"警告: APIサーバー起動失敗, 続行: {e}")
 
-        # =========================
-        # スプラッシュスクリーン
-        # =========================
-        pixmap = QPixmap(QSize(600, 400))
-        splash_bg_color = app.theme_manager.get_splash_bg_color()
-        pixmap.fill(splash_bg_color)
 
-        app.splash = NonClickableSplashScreen(pixmap)
-        app.splash.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.SplashScreen)
-        app.splash.show()
-        app.logger.debug("スプラッシュスクリーン表示")
+    # ----------------------------
+    # 動画再生ユーティリティ
+    # ----------------------------
+    def play_video(parent, file_path, on_finished):
+        """動画を再生して終了時に on_finished を呼ぶ"""
+        if not os.path.exists(file_path):
+            on_finished()
+            return
 
-        server_info = ""
-        if config.get("server.enabled", True) and app.api_server:
-            server_info = f"\n\nAPIサーバー: {app.api_server.get_url()}"
+        video_widget = QVideoWidget(parent)
+        video_widget.setGeometry(0, 0, parent.width(), parent.height())
+        video_widget.show()
 
-        app.splash.showMessage(
-            "PyKara System Booting...\n\n"
-            "【注意】大音量での歌唱は近隣の迷惑にならないようご注意ください\n\n"
-            f"設定: F1キーを押してください{server_info}",
-            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom,
-            Qt.GlobalColor.white
-        )
+        audio_output = QAudioOutput()
+        audio_output.setVolume(config.get_attract_volume())
+        player = QMediaPlayer()
+        player.setAudioOutput(audio_output)
+        player.setVideoOutput(video_widget)
+        player.setSource(QUrl.fromLocalFile(file_path))
 
-        # =========================
-        # アトラクト画面表示
-        # =========================
-        def show_attract():
-            try:
-                app.logger.debug("アトラクト画面生成中...")
-                app.attract_window = PyKaraAttract(app.config, app.selection_manager)
-                attract = app.attract_window
-                attract.show()
-                app.logger.debug("アトラクト画面 show() 完了")
+        player.play()
 
-                # フルスクリーン切替
-                if config.get("display.fullscreen", False):
-                    def set_fullscreen():
-                        try:
-                            attract.showFullScreen()
-                            attract.raise_()
-                            attract.activateWindow()
-                        except Exception as e:
-                            app.logger.error(f"フルスクリーン切替失敗: {e}", exc_info=sys.exc_info())
-                    QTimer.singleShot(100, set_fullscreen)
+        def handle_status(status):
+            from PyQt6.QtMultimedia import QMediaPlayer
+            if status == QMediaPlayer.MediaStatus.EndOfMedia:
+                player.stop()
+                video_widget.hide()
+                video_widget.deleteLater()
+                on_finished()
+
+        player.mediaStatusChanged.connect(handle_status)
+
+    # ----------------------------
+    # アトラクト画面表示
+    # ----------------------------
+    def show_attract():
+        try:
+            attract = PyKaraAttract(config, selection_manager)
+            attract.setParent(main_window)
+            attract.setGeometry(0, 0, width, height)
+            attract.show()
+            attract.raise_()
+            attract.activateWindow()
+            splash.finish(attract)
+
+            # 終了時ED動画再生設定
+            def play_ed_and_quit():
+                ed_path_mp4 = os.path.join(config.get("attract_video.local_dir", "videos"), "shop", "ed.mp4")
+                ed_path_mkv = os.path.join(config.get("attract_video.local_dir", "videos"), "shop", "ed.mkv")
+                ed_file = ed_path_mp4 if os.path.exists(ed_path_mp4) else ed_path_mkv
+                if os.path.exists(ed_file):
+                    play_video(main_window, ed_file, lambda: app.quit())
                 else:
-                    attract.raise_()
-                    attract.activateWindow()
+                    app.quit()
 
-                if app.splash:
-                    app.splash.finish(attract)
+            main_window.closeEvent = lambda event: (event.ignore(), play_ed_and_quit())
 
-                app.logger.debug("アトラクト画面表示完了")
+        except Exception as e:
+            splash.close()
+            QMessageBox.critical(None, "エラー",
+                                 f"アトラクト画面表示失敗:\n{str(e)}\n\n詳細:\n{traceback.format_exc()}")
+            sys.exit(1)
 
-            except Exception as e:
-                app.logger.error("アトラクト画面表示失敗", exc_info=sys.exc_info())
-                if app.splash:
-                    app.splash.close()
-                QMessageBox.critical(None, "エラー",
-                                     f"アトラクト画面表示失敗:\n{str(e)}\n\n詳細:\n{traceback.format_exc()}")
-                sys.exit(1)
+    # ----------------------------
+    # 起動時OP動画再生 → アトラクト表示
+    # ----------------------------
+    op_path_mp4 = os.path.join(config.get("attract_video.local_dir", "videos"), "shop", "op.mp4")
+    op_path_mkv = os.path.join(config.get("attract_video.local_dir", "videos"), "shop", "op.mkv")
+    op_file = op_path_mp4 if os.path.exists(op_path_mp4) else op_path_mkv
 
-        # 起動ディレイ後に表示
+    if os.path.exists(op_file):
+        play_video(main_window, op_file, show_attract)
+    else:
+        # OP動画がない場合は3秒後にアトラクト表示
         QTimer.singleShot(3000, show_attract)
-        app.logger.info("メインループ開始...")
-        exit_code = app.exec()
-        app.logger.info(f"アプリ終了 (終了コード: {exit_code})")
-        sys.exit(exit_code)
 
-    except Exception as e:
-        app.logger.error("予期せぬエラー", exc_info=sys.exc_info())
-        traceback.print_exc()
-        input("Enterキーで終了...")
-        sys.exit(1)
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("中断されました")
         sys.exit(0)
     except Exception as e:
-        print(f"致命的エラー: {e}")
+        print(f"致命的なエラー: {e}")
         traceback.print_exc()
-        input("Enterキーで終了...")
         sys.exit(1)

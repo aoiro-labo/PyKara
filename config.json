@@ -9,26 +9,10 @@
         "small_bold": false
     },
     "theme": {
-        "background_color": [
-            10,
-            10,
-            30
-        ],
-        "text_color": [
-            255,
-            255,
-            255
-        ],
-        "accent_color": [
-            0,
-            255,
-            204
-        ],
-        "splash_bg_color": [
-            0,
-            0,
-            0
-        ]
+        "background_color": [10, 10, 30],
+        "text_color": [255, 255, 255],
+        "accent_color": [0, 255, 204],
+        "splash_bg_color": [0, 0, 0]
     },
     "server": {
         "port": 8080,
@@ -43,5 +27,11 @@
     },
     "display": {
         "fullscreen": false
+    },
+    "attract_video": {
+        "mode": "local",
+        "local_dir": "videos",
+        "youtube_channel": "DAMmov1",
+        "volume": 50
     }
 }

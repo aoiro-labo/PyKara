@@ -1,6 +1,5 @@
 # config.py
 import json
-import os
 from pathlib import Path
 from typing import Dict, Any
 
@@ -19,9 +18,9 @@ class Config:
         },
         "theme": {
             "background_color": [10, 10, 30],  # RGB
-            "text_color": [255, 255, 255],  # RGB
-            "accent_color": [0, 255, 204],  # RGB (点滅時の色)
-            "splash_bg_color": [0, 0, 0]  # RGB
+            "text_color": [255, 255, 255],     # RGB
+            "accent_color": [0, 255, 204],     # RGB (点滅時の色)
+            "splash_bg_color": [0, 0, 0]       # RGB
         },
         "server": {
             "port": 8080,
@@ -29,13 +28,21 @@ class Config:
             "enabled": True
         },
         "debug": {
-            "enabled": True,  # デバッグモードを有効化（デフォルトでON）
-            "show_traceback": True,  # トレースバックを表示
-            "log_to_file": False,  # ログをファイルに出力
-            "log_file": "pykara_debug.log"  # ログファイル名
+            "enabled": True,       # デバッグモードを有効化（デフォルトでON）
+            "show_traceback": True, # トレースバックを表示
+            "log_to_file": False,   # ログをファイルに出力
+            "log_file": "pykara_debug.log"
         },
         "display": {
-            "fullscreen": False  # フルスクリーン表示（False=ウィンドウ表示）
+            "fullscreen": False,   # フルスクリーン表示（False=ウィンドウ表示）
+            "width": 1920,         # デフォルトウィンドウ幅
+            "height": 1080         # デフォルトウィンドウ高さ
+        },
+        "attract_video": {
+            "mode": "local",        # "local" or "youtube"
+            "local_dir": "videos",  # ローカル再生用ディレクトリ
+            "youtube_channel": "",  # YouTubeチャンネル名
+            "volume": 80            # 音量 0～100
         }
     }
     
@@ -111,3 +118,20 @@ class Config:
     def get_all(self) -> Dict[str, Any]:
         """全設定を取得"""
         return self._config.copy()
+    
+    # -------------------------------
+    # ウィンドウサイズ取得用のユーティリティ
+    # -------------------------------
+    def get_window_width(self) -> int:
+        return self.get("display.width", 1920)
+    
+    def get_window_height(self) -> int:
+        return self.get("display.height", 1080)
+    
+    # -------------------------------
+    # アトラクト画面音量取得
+    # -------------------------------
+    def get_attract_volume(self) -> float:
+        """0.0～1.0 の範囲で返す"""
+        volume_percent = self.get("attract_video.volume", 80)
+        return max(0, min(volume_percent, 100)) / 100.0
