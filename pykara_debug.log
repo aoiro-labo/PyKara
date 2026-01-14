@@ -78,3 +78,70 @@
 2026-01-13 22:04:44 - PyKara - DEBUG - ウィンドウ表示モードで表示します
 2026-01-13 22:04:44 - PyKara - DEBUG - アトラクト画面を表示しました
 2026-01-13 22:04:44 - PyKara - INFO - アプリケーションを終了します (終了コード: 0)
+2026-01-13 22:06:32 - PyKara - INFO - PyKaraを起動しています...
+2026-01-13 22:06:32 - PyKara - DEBUG - QApplicationを初期化しました
+2026-01-13 22:06:32 - PyKara - DEBUG - FontSetを設定しました
+2026-01-13 22:06:32 - PyKara - DEBUG - ThemeManagerを初期化しました
+2026-01-13 22:06:32 - PyKara - DEBUG - SelectionManagerを初期化しました
+2026-01-13 22:06:32 - PyKara - INFO - APIサーバーを起動しました: http://localhost:8080
+2026-01-13 22:06:33 - PyKara - DEBUG - スプラッシュスクリーンを表示しました
+2026-01-13 22:06:33 - PyKara - INFO - メインループを開始します...
+2026-01-13 22:06:36 - PyKara - DEBUG - アトラクト画面を表示しようとしています...
+2026-01-13 22:06:36 - PyKara - DEBUG - アトラクト画面のインスタンスを作成しました
+2026-01-13 22:06:36 - PyKara - DEBUG - アトラクト画面をshow()しました
+2026-01-13 22:06:36 - PyKara - DEBUG - ウィンドウ表示モードで表示します
+2026-01-13 22:06:36 - PyKara - DEBUG - アトラクト画面を表示しました
+2026-01-13 22:06:36 - PyKara - INFO - アプリケーションを終了します (終了コード: 0)
+2026-01-13 22:06:40 - PyKara - INFO - PyKaraを起動しています...
+2026-01-13 22:06:40 - PyKara - DEBUG - QApplicationを初期化しました
+2026-01-13 22:06:40 - PyKara - DEBUG - FontSetを設定しました
+2026-01-13 22:06:40 - PyKara - DEBUG - ThemeManagerを初期化しました
+2026-01-13 22:06:40 - PyKara - DEBUG - SelectionManagerを初期化しました
+2026-01-13 22:06:40 - PyKara - INFO - APIサーバーを起動しました: http://localhost:8080
+2026-01-13 22:06:42 - PyKara - DEBUG - スプラッシュスクリーンを表示しました
+2026-01-13 22:06:42 - PyKara - INFO - メインループを開始します...
+2026-01-13 22:06:45 - PyKara - DEBUG - アトラクト画面を表示しようとしています...
+2026-01-13 22:06:45 - PyKara - DEBUG - アトラクト画面のインスタンスを作成しました
+2026-01-13 22:06:45 - PyKara - DEBUG - アトラクト画面をshow()しました
+2026-01-13 22:06:45 - PyKara - DEBUG - ウィンドウ表示モードで表示します
+2026-01-13 22:06:45 - PyKara - DEBUG - アトラクト画面を表示しました
+2026-01-13 22:06:45 - PyKara - INFO - アプリケーションを終了します (終了コード: 0)
+2026-01-13 22:07:35 - PyKara - INFO - PyKaraを起動しています...
+2026-01-13 22:07:35 - PyKara - DEBUG - QApplicationを初期化しました
+2026-01-13 22:07:35 - PyKara - DEBUG - FontSetを設定しました
+2026-01-13 22:07:35 - PyKara - DEBUG - ThemeManagerを初期化しました
+2026-01-13 22:07:35 - PyKara - DEBUG - SelectionManagerを初期化しました
+2026-01-13 22:07:35 - PyKara - INFO - APIサーバーを起動しました: http://localhost:8080
+2026-01-13 22:07:36 - PyKara - DEBUG - スプラッシュスクリーンを表示しました
+2026-01-13 22:07:37 - PyKara - INFO - メインループを開始します...
+2026-01-13 22:07:40 - PyKara - DEBUG - アトラクト画面を表示しようとしています...
+2026-01-13 22:07:40 - PyKara - DEBUG - アトラクト画面のインスタンスを作成しました
+2026-01-13 22:07:40 - PyKara - DEBUG - アトラクト画面をshow()しました
+2026-01-13 22:07:40 - PyKara - DEBUG - ウィンドウ表示モードで表示します
+2026-01-13 22:07:40 - PyKara - DEBUG - アトラクト画面を表示しました
+2026-01-13 22:07:40 - PyKara - INFO - アプリケーションを終了します (終了コード: 0)
+2026-01-14 20:46:24 - PyKara - INFO - PyKaraを起動しています...
+2026-01-14 20:46:24 - PyKara - DEBUG - QApplicationを初期化しました
+2026-01-14 20:46:24 - PyKara - DEBUG - FontSetを設定しました
+2026-01-14 20:46:24 - PyKara - DEBUG - ThemeManagerを初期化しました
+2026-01-14 20:46:24 - PyKara - DEBUG - SelectionManagerを初期化しました
+2026-01-14 20:46:24 - PyKara - INFO - APIサーバーを起動しました: http://localhost:8080
+2026-01-14 20:46:25 - PyKara - DEBUG - スプラッシュスクリーンを表示しました
+2026-01-14 20:46:25 - PyKara - INFO - メインループを開始します...
+2026-01-14 20:46:28 - PyKara - DEBUG - アトラクト画面を表示しようとしています...
+2026-01-14 20:46:28 - PyKara - DEBUG - アトラクト画面のインスタンスを作成しました
+2026-01-14 20:46:28 - PyKara - DEBUG - アトラクト画面をshow()しました
+2026-01-14 20:46:28 - PyKara - DEBUG - ウィンドウ表示モードで表示します
+2026-01-14 20:46:28 - PyKara - DEBUG - アトラクト画面を表示しました
+2026-01-14 20:46:28 - PyKara - INFO - アプリケーションを終了します (終了コード: 0)
+2026-01-14 20:53:52 - PyKara - INFO - PyKaraを起動しています...
+2026-01-14 20:53:52 - PyKara - DEBUG - FontSetを設定しました
+2026-01-14 20:53:52 - PyKara - DEBUG - ThemeManager初期化完了
+2026-01-14 20:53:52 - PyKara - DEBUG - SelectionManager初期化完了
+2026-01-14 20:53:52 - PyKara - INFO - APIサーバー起動: http://localhost:8080
+2026-01-14 20:53:53 - PyKara - DEBUG - スプラッシュスクリーン表示
+2026-01-14 20:53:53 - PyKara - INFO - メインループ開始...
+2026-01-14 20:53:56 - PyKara - DEBUG - アトラクト画面生成中...
+2026-01-14 20:53:56 - PyKara - DEBUG - アトラクト画面 show() 完了
+2026-01-14 20:53:56 - PyKara - DEBUG - アトラクト画面表示完了
+2026-01-14 20:54:00 - PyKara - INFO - アプリ終了 (終了コード: 0)
